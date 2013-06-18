@@ -1,1 +1,3 @@
 include README.md
+include test_pytest_httpretty.py
+include tox.ini
