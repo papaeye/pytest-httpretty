@@ -1,21 +1,17 @@
 import os.path
-import re
 
 from setuptools import setup
 
 
-def read(filename):
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                        filename)
-    return open(path).read()
-
-
-__version__ = re.search("^__version__ = '(.+)'",
-                        read('pytest_httpretty.py'), re.M).group(1)
+here = os.path.dirname(os.path.abspath(__file__))
+version = next((line.split('=')[1].strip().replace("'", '')
+                for line in open(os.path.join(here, 'pytest_httpretty.py'))
+                if line.startswith('__version__ = ')),
+               '0.0.dev0')
 
 
 setup(name='pytest-httpretty',
-      version=__version__,
+      version=version,
       description='A thin wrapper of HTTPretty for pytest',
       author='papaeye',
       author_email='papaeye@gmail.com',
