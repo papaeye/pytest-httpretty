@@ -1,21 +1,27 @@
-import httpretty as _httpretty
-import pytest
+import functools
+
+import httpretty
 
 
 __version__ = '0.1.dev'
 
 
-@pytest.fixture
-def httpretty(request):
-    _httpretty.httpretty.reset()
-    _httpretty.httpretty.enable()
-    request.addfinalizer(_httpretty.httpretty.disable)
-    return _httpretty
+def pytest_configure(config):
+    config.addinivalue_line('markers',
+                            'httpretty: mark tests to activate HTTPretty.')
 
 
-@pytest.fixture
-def stub_get(request, httpretty):
-    def wrapper(*args, **kwargs):
-        httpretty.register_uri(httpretty.GET, *args, **kwargs)
-        return httpretty
-    return wrapper
+def pytest_runtest_setup(item):
+    marker = item.get_marker('httpretty')
+    if marker is not None:
+        httpretty.reset()
+        httpretty.enable()
+
+
+def pytest_runtest_teardown(item, nextitem):
+    marker = item.get_marker('httpretty')
+    if marker is not None:
+        httpretty.disable()
+
+
+stub_get = functools.partial(httpretty.register_uri, httpretty.GET)
