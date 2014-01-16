@@ -7,7 +7,7 @@ here = os.path.dirname(os.path.abspath(__file__))
 version = next((line.split('=')[1].strip().replace("'", '')
                 for line in open(os.path.join(here, 'pytest_httpretty.py'))
                 if line.startswith('__version__ = ')),
-               '0.0.dev0')
+               '0.0.0.dev0')
 
 
 setup(name='pytest-httpretty',
