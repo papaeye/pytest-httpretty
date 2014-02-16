@@ -25,3 +25,5 @@ def pytest_runtest_teardown(item, nextitem):
 
 
 stub_get = functools.partial(httpretty.register_uri, httpretty.GET)
+
+last_request = httpretty.last_request
